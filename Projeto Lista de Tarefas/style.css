@@ -1,4 +1,4 @@
-
+/* Define estilos básicos para todos os elementos */
 * {
     margin: 0;
     padding: 0;
@@ -7,18 +7,21 @@
     outline: none;
 }
 
-body{
-    background: url("./img/background.png");
+/* Define o plano de fundo do corpo da página */
+body {
+    background: linear-gradient(to bottom, #a0c8e0, #3a5b81);
 }
 
+/* Estiliza o contêiner principal */
 .container {
-    background-color: #d1d1d1;
+    background-color: #a0c8e0; /* Azul claro */
     width: 500px;
     border-radius: 10px;
     padding: 20px;
     margin: 100px auto 0;
 }
 
+/* Estiliza a caixa de entrada de texto */
 .input-task {
     border: none;
     border-radius: 5px;
@@ -27,11 +30,12 @@ body{
     padding-left: 10px;
 }
 
+/* Estiliza o botão de adicionar tarefa */
 .button-add-task {
     border: none;
     border-radius: 5px;
     height: 40px;
-    background-color: #003329;
+    background-color: #3a5b81; /* Azul escuro */
     color: #ffffff;
     font-size: 17px;
     padding: 0 15px;
@@ -48,14 +52,16 @@ body{
     opacity: 0.6;
 }
 
+/* Estiliza a lista de tarefas */
 .list-tasks {
     width: 100%;
     list-style: none;
     margin-top: 30px;
 }
 
+/* Estiliza cada tarefa individual */
 .task {
-    background-color: #F2F2F2;
+    background-color: #b4d2e5; /* Azul claro */
     box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.2);
     height: 50px;
     display: flex;
@@ -67,17 +73,20 @@ body{
     cursor: pointer;
 }
 
+/* Estiliza as imagens dentro de cada tarefa */
 img {
     height: 25px;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
+/* Mostra as imagens quando o mouse passa sobre a tarefa */
 .task:hover img {
     opacity: 1;
 }
 
+/* Estiliza tarefas concluídas com uma linha de texto tachada */
 .done {
-    background-color: #8fac55;
+    background-color: #3a5b81; 
     text-decoration: line-through;
 }
