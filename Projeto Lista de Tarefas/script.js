@@ -1,65 +1,77 @@
-const button = document.querySelector('.button-add-task')
-const input = document.querySelector('.input-task')
-const listaCompleta = document.querySelector('.list-tasks')
+// Aqui, estamos obtendo referências para elementos da página HTML.
+const button = document.querySelector('.button-add-task'); // Referência ao botão "Adicionar Tarefa"
+const input = document.querySelector('.input-task'); // Referência à caixa de entrada de texto
+const listaCompleta = document.querySelector('.list-tasks'); // Referência à lista de tarefas
 
-let minhaListaDeItens = []
+// Aqui, estamos criando um array vazio para armazenar nossas tarefas.
+let minhaListaDeItens = [];
 
+// Esta função é chamada quando o botão "Adicionar Tarefa" é clicado.
 function adicionarNovaTarefa() {
+  // Adiciona uma nova tarefa à lista de tarefas com o texto da caixa de entrada.
   minhaListaDeItens.push({
     tarefa: input.value,
-    concluida: false,
-  })
+    concluida: false, // Inicialmente, a tarefa não está concluída.
+  });
 
-  input.value = ''
+  // Limpa o campo de entrada de texto.
+  input.value = '';
 
-  mostrarTarefas()
+  // Atualiza a exibição das tarefas na página.
+  mostrarTarefas();
 }
 
+// Esta função exibe as tarefas na página.
 function mostrarTarefas() {
-  let novaLi = ''
+  let novaLi = '';
 
-  // ['comprar café', 'estudar programação']
-
+  // Itera sobre a lista de tarefas e cria elementos HTML para cada uma.
   minhaListaDeItens.forEach((item, posicao) => {
-    novaLi =
-      novaLi +
+    novaLi +=
       `
-
         <li class="task ${item.concluida && 'done'}">
             <img src="./img/checked.png" alt="check-na-tarefa" onclick="concluirTarefa(${posicao})">
             <p>${item.tarefa}</p>
             <img src="./img/trash.png" alt="tarefa-para-o-lixo" onclick="deletarItem(${posicao})">
         </li>
-        
         `
-  })
+  });
 
-  listaCompleta.innerHTML = novaLi
+  // Atualiza a lista de tarefas na página com os elementos criados.
+  listaCompleta.innerHTML = novaLi;
 
-  localStorage.setItem('lista', JSON.stringify(minhaListaDeItens))
+  // Armazena as tarefas no armazenamento local do navegador.
+  localStorage.setItem('lista', JSON.stringify(minhaListaDeItens));
 }
 
+// Esta função marca ou desmarca uma tarefa como concluída.
 function concluirTarefa(posicao) {
-  minhaListaDeItens[posicao].concluida = !minhaListaDeItens[posicao].concluida
+  minhaListaDeItens[posicao].concluida = !minhaListaDeItens[posicao].concluida;
 
-  mostrarTarefas()
+  // Atualiza a exibição das tarefas na página.
+  mostrarTarefas();
 }
 
+// Esta função exclui uma tarefa da lista.
 function deletarItem(posicao) {
-  minhaListaDeItens.splice(posicao, 1)
+  minhaListaDeItens.splice(posicao, 1);
 
-  mostrarTarefas()
+  // Atualiza a exibição das tarefas na página.
+  mostrarTarefas();
 }
 
+// Esta função recupera as tarefas salvas no armazenamento local ao carregar a página.
 function recarregarTarefas() {
-  const tarefasDoLocalStorage = localStorage.getItem('lista')
+  const tarefasDoLocalStorage = localStorage.getItem('lista');
 
   if (tarefasDoLocalStorage) {
-    minhaListaDeItens = JSON.parse(tarefasDoLocalStorage)
+    minhaListaDeItens = JSON.parse(tarefasDoLocalStorage);
   }
 
-  mostrarTarefas()
+  // Exibe as tarefas na página.
+  mostrarTarefas();
 }
 
-recarregarTarefas()
-button.addEventListener('click', adicionarNovaTarefa)
+// Carrega as tarefas ao iniciar a página e configura o botão para adicionar tarefas.
+recarregarTarefas();
+button.addEventListener('click', adicionarNovaTarefa);
