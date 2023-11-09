@@ -5,7 +5,113 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <style>/* Define estilos básicos para todos os elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    outline: none;
+}
+
+/* Define o plano de fundo do corpo da página */
+body {
+    background: linear-gradient(to bottom, #0099cc, #003366);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Estiliza o contêiner principal */
+.container {
+    background-color: #ffffff;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Estiliza a caixa de entrada de texto */
+.input-task {
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* Estiliza o botão de adicionar tarefa */
+.button-add-task {
+    border: none;
+    border-radius: 5px;
+    height: 50px;
+    background-color: #003366;
+    color: #ffffff;
+    font-size: 20px;
+    width: 100%;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.3s;
+}
+
+.button-add-task:hover {
+    background-color: #005599;
+}
+
+.button-add-task:active {
+    background-color: #001f33;
+}
+
+/* Estiliza a lista de tarefas */
+.list-tasks {
+    width: 100%;
+    list-style: none;
+    margin-top: 30px;
+}
+
+/* Estiliza cada tarefa individual */
+.task {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.task:hover {
+    background-color: #e0e0e0;
+}
+
+/* Estiliza as imagens dentro de cada tarefa */
+img {
+    height: 30px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+/* Mostra as imagens quando o mouse passa sobre a tarefa */
+.task:hover img {
+    opacity: 1;
+}
+
+/* Estiliza tarefas concluídas com uma linha de texto tachada */
+.done {
+    background-color: #8fac55;
+    text-decoration: line-through;
+}</style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -22,5 +128,81 @@
         </ul>
     </div>
 </body>
-<script src="script.js"></script>
+<script>// Aqui, estamos obtendo referências para elementos da página HTML.
+const button = document.querySelector('.button-add-task'); // Referência ao botão "Adicionar Tarefa"
+const input = document.querySelector('.input-task'); // Referência à caixa de entrada de texto
+const listaCompleta = document.querySelector('.list-tasks'); // Referência à lista de tarefas
+
+// Aqui, estamos criando um array vazio para armazenar nossas tarefas.
+let minhaListaDeItens = [];
+
+// Esta função é chamada quando o botão "Adicionar Tarefa" é clicado.
+function adicionarNovaTarefa() {
+  // Adiciona uma nova tarefa à lista de tarefas com o texto da caixa de entrada.
+  minhaListaDeItens.push({
+    tarefa: input.value,
+    concluida: false, // Inicialmente, a tarefa não está concluída.
+  });
+
+  // Limpa o campo de entrada de texto.
+  input.value = '';
+
+  // Atualiza a exibição das tarefas na página.
+  mostrarTarefas();
+}
+
+// Esta função exibe as tarefas na página.
+function mostrarTarefas() {
+  let novaLi = '';
+
+  // Itera sobre a lista de tarefas e cria elementos HTML para cada uma.
+  minhaListaDeItens.forEach((item, posicao) => {
+    novaLi +=
+      `
+        <li class="task ${item.concluida && 'done'}">
+            <img src="./img/checked.png" alt="check-na-tarefa" onclick="concluirTarefa(${posicao})">
+            <p>${item.tarefa}</p>
+            <img src="./img/trash.png" alt="tarefa-para-o-lixo" onclick="deletarItem(${posicao})">
+        </li>
+        `
+  });
+
+  // Atualiza a lista de tarefas na página com os elementos criados.
+  listaCompleta.innerHTML = novaLi;
+
+  // Armazena as tarefas no armazenamento local do navegador.
+  localStorage.setItem('lista', JSON.stringify(minhaListaDeItens));
+}
+
+// Esta função marca ou desmarca uma tarefa como concluída.
+function concluirTarefa(posicao) {
+  minhaListaDeItens[posicao].concluida = !minhaListaDeItens[posicao].concluida;
+
+  // Atualiza a exibição das tarefas na página.
+  mostrarTarefas();
+}
+
+// Esta função exclui uma tarefa da lista.
+function deletarItem(posicao) {
+  minhaListaDeItens.splice(posicao, 1);
+
+  // Atualiza a exibição das tarefas na página.
+  mostrarTarefas();
+}
+
+// Esta função recupera as tarefas salvas no armazenamento local ao carregar a página.
+function recarregarTarefas() {
+  const tarefasDoLocalStorage = localStorage.getItem('lista');
+
+  if (tarefasDoLocalStorage) {
+    minhaListaDeItens = JSON.parse(tarefasDoLocalStorage);
+  }
+
+  // Exibe as tarefas na página.
+  mostrarTarefas();
+}
+
+// Carrega as tarefas ao iniciar a página e configura o botão para adicionar tarefas.
+recarregarTarefas();
+button.addEventListener('click', adicionarNovaTarefa);</script>
 </html>
